@@ -96,11 +96,12 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PullToRefresh);
 
 		// Create Loading Views ready for use later
-		FrameLayout frame = new FrameLayout(context);
+		mLvFooterLoadingFrame = new FrameLayout(context);
 		mHeaderLoadingView = new LoadingLayout(context, Mode.PULL_DOWN_TO_REFRESH, a);
-		frame.addView(mHeaderLoadingView, FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		mLvFooterLoadingFrame.addView(mHeaderLoadingView, FrameLayout.LayoutParams.FILL_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		mHeaderLoadingView.setVisibility(View.GONE);
-		lv.addHeaderView(frame, null, false);
+		// MBR: commented line to prevent refresh loading below header
+//		lv.addHeaderView(mLvFooterLoadingFrame, null, false);
 
 		mLvFooterLoadingFrame = new FrameLayout(context);
 		mFooterLoadingView = new LoadingLayout(context, Mode.PULL_UP_TO_REFRESH, a);
@@ -207,7 +208,9 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 				originalLoadingLayout = getHeaderLayout();
 				listViewLoadingLayout = mHeaderLoadingView;
 				selection = 0;
-				scrollToY = getScrollY() + getHeaderHeight();
+				// MBR commented out to show outside reloading
+//				scrollToY = getScrollY() + getHeaderHeight();
+				scrollToY = -getHeaderHeight();
 				break;
 		}
 
@@ -218,20 +221,23 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 		}
 
 		// Hide our original Loading View
-		originalLoadingLayout.setVisibility(View.INVISIBLE);
+		// MBR commented out to show outside reloading
+		//		originalLoadingLayout.setVisibility(View.INVISIBLE);
 
 		// Show the ListView Loading View and set it to refresh
-		listViewLoadingLayout.setVisibility(View.VISIBLE);
+		// MBR commented out to show outside reloading
+		//		listViewLoadingLayout.setVisibility(View.VISIBLE);
 		listViewLoadingLayout.refreshing();
 
-		if (doScroll) {
-			// Make sure the ListView is scrolled to show the loading
-			// header/footer
-			mRefreshableView.setSelection(selection);
-
-			// Smooth scroll as normal
-			smoothScrollTo(0);
-		}
+		// MBR commented out to show outside reloading
+		//		if (doScroll) {
+		//			// Make sure the ListView is scrolled to show the loading
+		//			// header/footer
+		//			mRefreshableView.setSelection(selection);
+		//
+		//			// Smooth scroll as normal
+		//			smoothScrollTo(0);
+		//		}
 	}
 
 	class InternalListView extends ListView implements EmptyViewMethodAccessor {
